@@ -12,52 +12,52 @@
     src: local('Helvetica Neue Medium'), local('HelveticaNeue-Medium');
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 body {
     font-family: 'Helvetica Neue', sans-serif;
     font-weight: 500;
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
+    background: #fff;
     color: #000;
     letter-spacing: 0.5px;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><text x="0" y="48" font-size="48">◤</text></svg>') 0 48, auto;
 }
 
 .container {
-    width: 100%;
     padding: 5px;
-    box-sizing: border-box;
     flex: 1;
+    box-sizing: border-box;
 }
 
-/* Header */
+/* HEADER */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
     position: relative;
-    height: 80px;
+    height: 240px;
+    overflow: hidden;
 }
 
-/* Titolo scorrevole */
 .title {
-    font-size: 72px;
+    font-size: 216px;
     white-space: nowrap;
     position: absolute;
+    line-height: 1;
     cursor: grab;
     user-select: none;
+    z-index: 1;
 }
 
-/* Link */
 nav {
+    position: relative;
+    z-index: 3;
     display: flex;
     gap: 12px;
-    z-index: 1;
+    padding-top: 20px;
 }
 
 nav a {
@@ -66,48 +66,61 @@ nav a {
     font-size: 15px;
 }
 
-nav a:hover {
-    color: #555;
-}
+nav a:hover { color: #555; }
 
-/* Filetti */
-.title-line {
-    border-bottom: 1px solid #000;
-    margin: 4px 0 8px 0;
-}
-
+/* FILETTI */
+.title-line,
 .text-line {
     border-bottom: 1px solid #000;
-    margin: 6px 0 10px 0;
+    margin: 6px 0;
 }
 
-/* Testo */
-p.description {
-    font-size: 19px;
-    margin: 0;
-    color: #000;
-    line-height: 1.4;
+/* PROGETTI */
+.projects {
+    margin-top: 6px;
 }
 
-/* Gallery */
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 5px;
+.project {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.gallery img {
+.project-inner {
     width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
+    height: 100%;
+    position: relative;
+    border-bottom: 1px solid #000;
+    transition: background-color 0.2s ease;
 }
 
-/* Footer */
+.project-inner:hover {
+    background-color: #000;
+}
+
+.project-title {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 96px;
+    line-height: 1;
+    cursor: grab;
+    user-select: none;
+    color: #000;
+    transition: color 0.2s ease;
+}
+
+.project-inner:hover .project-title {
+    color: #fff;
+}
+
+/* FOOTER */
 .footer {
     font-size: 12px;
-    color: #222;
     padding: 5px;
+    color: #222;
+    margin-top: auto;
 }
 </style>
 </head>
@@ -117,7 +130,7 @@ p.description {
 <div class="container">
 
     <div class="header">
-        <div class="title" id="title">Giada Balinzo</div>
+        <div class="title draggable" data-speed="2.1">Giada Balinzo</div>
 
         <nav>
             <a href="https://www.instagram.com" target="_blank">Instagram</a>
@@ -128,17 +141,45 @@ p.description {
 
     <div class="title-line"></div>
 
-    <p class="description">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-    </p>
+    <div class="projects">
 
-    <div class="text-line"></div>
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="-1.2">Progetto 1</div>
+                <a href="es1 copia/index.html" class="project" >
 
-    <div class="gallery">
-        <img src="https://via.placeholder.com/400x300?text=Progetto+1" alt="Progetto 1">
-        <img src="https://via.placeholder.com/400x300?text=Progetto+2" alt="Progetto 2">
-        <img src="https://via.placeholder.com/400x300?text=Progetto+3" alt="Progetto 3">
-        <img src="https://via.placeholder.com/400x300?text=Progetto+4" alt="Progetto 4">
+                </a>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="1.4">Progetto 2</div>
+                <a href="es1_prove copia/index.html" class="project" >
+                    
+                </a>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="-1.1">Progetto 3</div>
+                <a href="es2 copia/index.html" class="project" >
+                    
+                </a>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="1.3">Progetto 4</div>
+                <a href="es3 copia/index.html" class="project" >
+                    
+                </a>
+                
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -148,50 +189,53 @@ p.description {
 </div>
 
 <script>
-const title = document.getElementById("title");
-let scrollSpeed = 1.5; // triplicata la velocità
-let position = -title.offsetWidth;
-let dragging = false;
-let dragStartX = 0;
-let initialX = 0;
+const elements = document.querySelectorAll(".draggable");
 
-// Posizione iniziale
-title.style.left = position + "px";
+elements.forEach(el => {
+    let speed = parseFloat(el.dataset.speed);
+    let position = speed > 0 ? -el.offsetWidth : window.innerWidth;
+    let dragging = false;
+    let startX = 0;
+    let startPos = 0;
 
-// Drag
-title.addEventListener("mousedown", e => {
-    dragging = true;
-    dragStartX = e.clientX;
-    initialX = position;
-    title.style.cursor = "grabbing";
-});
+    el.style.left = position + "px";
 
-document.addEventListener("mousemove", e => {
-    if (!dragging) return;
-    let delta = e.clientX - dragStartX;
-    position = initialX + delta;
-    title.style.left = position + "px";
-});
+    el.addEventListener("mousedown", e => {
+        dragging = true;
+        startX = e.clientX;
+        startPos = position;
+        el.style.cursor = "grabbing";
+        e.preventDefault();
+    });
 
-document.addEventListener("mouseup", () => {
-    if (!dragging) return;
-    dragging = false;
-    title.style.cursor = "grab";
-});
+    document.addEventListener("mousemove", e => {
+        if (!dragging) return;
+        position = startPos + (e.clientX - startX);
+        el.style.left = position + "px";
+    });
 
-// Animazione scorrimento automatico
-function animate() {
-    if (!dragging) {
-        position += scrollSpeed;
-        if (position > window.innerWidth) {
-            position = -title.offsetWidth;
+    document.addEventListener("mouseup", () => {
+        dragging = false;
+        el.style.cursor = "grab";
+    });
+
+    function animate() {
+        if (!dragging) {
+            position += speed;
+
+            if (speed > 0 && position > window.innerWidth) {
+                position = -el.offsetWidth;
+            }
+            if (speed < 0 && position < -el.offsetWidth) {
+                position = window.innerWidth;
+            }
+            el.style.left = position + "px";
         }
-        title.style.left = position + "px";
+        requestAnimationFrame(animate);
     }
-    requestAnimationFrame(animate);
-}
 
-animate();
+    animate();
+});
 </script>
 
 </body>
