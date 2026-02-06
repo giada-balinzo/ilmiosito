@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mouse Trail</title>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.min.js"></script>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #fff;
+}
+canvas {
+    display: block;
+}
+</style>
+</head>
+<body>
+
+<script>
+let trail = []; // array per la scia permanente
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    rectMode(CENTER);
+    stroke(0); // bordo nero
+    fill(255); // quadrati bianchi
+    background(255); // sfondo bianco iniziale
+}
+
+function draw() {
+    // aggiungo quadrato alla scia quando il mouse si muove
+    if (mouseIsPressed || (mouseX !== pmouseX || mouseY !== pmouseY)) {
+        trail.push({
+            x: mouseX,
+            y: mouseY,
+            size: 160 // dimensione ingrandita x4
+        });
+    }
+
+    // disegno la scia permanente
+    for (let t of trail) {
+        rect(t.x, t.y, t.size, t.size);
+    }
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII Numbers Interactive Hover</title>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    background-color: black;
+    overflow: hidden;
+    font-family: monospace;
+}
+canvas {
+    display: block;
+}
+</style>
+</head>
+<body>
+
+<script>
+let faccione;
+let imgW, imgH;
+let offsetX, offsetY;
+
+let textSizeVal = 6; 
+let numbers = ["0","1","2","3","4","5","6","7","8","9"];
+let numH, numV;
+let asciiGrid = [];
+
+let contrastPower = 2.0; 
+let minBrightness = 20; 
+let maxBrightness = 80;
+
+// 🔥 raggio di influenza del cursore
+let hoverRadius = 40;
+
+function preload() {
+    faccione = loadImage("Balinzo.png"); 
+}
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    textAlign(CENTER, CENTER);
+    textSize(textSizeVal);
+    fill(255);
+    noStroke();
+
+    let scale = min(width / faccione.width, height / faccione.height);
+    imgW = faccione.width * scale;
+    imgH = faccione.height * scale;
+    offsetX = (width - imgW) / 2;
+    offsetY = (height - imgH) / 2;
+
+    numH = floor(imgW / textSizeVal);
+    numV = floor(imgH / textSizeVal);
+
+    faccione.loadPixels();
+    createASCII();
+}
+
+function applyContrast(brightVal) {
+    let b = brightVal / 100; 
+    b = pow(b, 1 / contrastPower); 
+    return b * 100;
+}
+
+function createASCII() {
+    asciiGrid = [];
+    let stepX = faccione.width / numH;
+    let stepY = faccione.height / numV;
+
+    for (let j = 0; j < numV; j++) {
+        let row = [];
+        for (let i = 0; i < numH; i++) {
+            let x = floor(i * stepX);
+            let y = floor(j * stepY);
+            let c = faccione.get(x, y);
+
+            if (alpha(c) < 10) {
+                row.push("");
+            } else {
+                let b = brightness(c);
+                b = applyContrast(b);
+
+                if (b < minBrightness || b > maxBrightness) {
+                    row.push("");
+                } else {
+                    let index = floor(
+                        map(b, minBrightness, maxBrightness, numbers.length - 1, 0)
+                    );
+                    index = constrain(index, 0, numbers.length - 1);
+                    row.push(numbers[index]);
+                }
+            }
+        }
+        asciiGrid.push(row);
+    }
+}
+
+function draw() {
+    background(0);
+    fill(255);
+
+    for (let j = 0; j < numV; j++) {
+        for (let i = 0; i < numH; i++) {
+            let x = i * textSizeVal + offsetX;
+            let y = j * textSizeVal + offsetY;
+
+            let glyph = asciiGrid[j][i];
+
+            // campo di azione ampliato attorno al cursore
+            if (glyph !== "" && dist(mouseX, mouseY, x, y) < hoverRadius) {
+                glyph = random(numbers);
+                asciiGrid[j][i] = glyph;
+            }
+
+            if (glyph !== "") {
+                text(glyph, x, y);
+            }
+        }
+    }
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+
+    let scale = min(width / faccione.width, height / faccione.height);
+    imgW = faccione.width * scale;
+    imgH = faccione.height * scale;
+    offsetX = (width - imgW) / 2;
+    offsetY = (height - imgH) / 2;
+
+    createASCII();
+}
+</script>
+
+</body>
+</html>

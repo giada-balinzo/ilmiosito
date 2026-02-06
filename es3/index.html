@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Living G Trace</title>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: white;
+    }
+</style>
+</head>
+<body>
+
+<script>
+let baseSize;
+let size;
+let angle = 0;
+let angleVel = 0;
+let targetAngleVel = 0;
+
+// posizione centrale variabile
+let cx, cy;
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    baseSize = min(width, height) * 0.6;
+    size = baseSize;
+
+    cx = width / 2;
+    cy = height / 2;
+
+    textAlign(CENTER, CENTER);
+    textFont("Helvetica Neue");
+
+    background(255); // sfondo bianco iniziale
+}
+
+function draw() {
+    // NON cancelliamo lo sfondo → le tracce rimangono
+
+    // distanza mouse dal centro
+    let dx = mouseX - cx;
+    let dy = mouseY - cy;
+    let distMouse = dist(mouseX, mouseY, cx, cy);
+
+    // rotazione più marcata se il cursore è vicino
+    targetAngleVel = map(distMouse, 0, width / 2, 0.15, 0.002, true);
+    angleVel += (targetAngleVel - angleVel) * 0.05;
+    angle += angleVel;
+
+    // spostamento leggero verso il mouse
+    cx += dx * 0.02;
+    cy += dy * 0.02;
+
+    // pulsazione e deformazioni
+    let breathe = sin(frameCount * 0.03) * 30;
+    size += (baseSize + breathe - size) * 0.08;
+
+    push();
+    translate(cx, cy);
+    rotate(angle);
+
+    // distorsioni sensibili al mouse
+    shearX(sin(frameCount * 0.02 + dx * 0.01) * 0.25);
+    shearY(cos(frameCount * 0.017 + dy * 0.01) * 0.25);
+
+    textSize(size);
+
+    // G bianca con contorno nero
+    fill(255);
+    stroke(0);
+    strokeWeight(4);
+    text("G", 0, 20);
+
+    pop();
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    baseSize = min(width, height) * 0.6;
+    size = baseSize;
+    cx = width / 2;
+    cy = height / 2;
+}
+</script>
+
+</body>
+</html>
