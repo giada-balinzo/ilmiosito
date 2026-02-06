@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Top 20 parole con Clara - Responsive</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    margin: 20px 40px 10px 40px;
+    text-transform: none; /* titolo normale */
+  }
+
+  #chart {
+    flex: 1; /* riempie lo spazio disponibile */
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .bar { fill: white; stroke: black; stroke-width: 1; cursor: pointer; }
+  .bar:hover { fill: black; }
+
+  .axis path, .axis line { stroke: black; }
+  .axis text { font-family: Helvetica, Arial, sans-serif; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>Top 20 parole con Clara</h1>
+<svg id="chart"></svg>
+
+<script>
+const data = [
+  {word:"media",value:1456},{word:"omessi",value:1455},{word:"ma",value:334},
+  {word:"che",value:309},{word:"non",value:307},{word:"si",value:303},
+  {word:"è",value:271},{word:"il",value:176},{word:"a",value:154},
+  {word:"la",value:144},{word:"mi",value:139},{word:"di",value:138},
+  {word:"in",value:136},{word:"ho",value:121},{word:"e",value:121},
+  {word:"io",value:113},{word:"no",value:113},{word:"un",value:104},
+  {word:"eh",value:102},{word:"per",value:101}
+];
+
+const margin = {top:20,right:20,bottom:120,left:60};
+const svgHeight = document.getElementById("chart").clientHeight;
+const svgWidth = document.getElementById("chart").clientWidth;
+const width = svgWidth - margin.left - margin.right;
+const height = svgHeight - margin.top - margin.bottom;
+
+const svg = d3.select("#chart")
+  .append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
+
+const x = d3.scaleBand()
+  .domain(data.map(d => d.word))
+  .range([0, width])
+  .padding(0.3);
+
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data,d=>d.value)])
+  .nice()
+  .range([height, 0]);
+
+// Asse X verticale
+svg.append("g")
+  .attr("class","axis")
+  .attr("transform",`translate(0,${height})`)
+  .call(d3.axisBottom(x))
+  .selectAll("text")
+  .attr("transform","rotate(-90)")
+  .attr("text-anchor","end")
+  .attr("dx","-0.6em")
+  .attr("dy","-0.3em");
+
+// Asse Y
+svg.append("g")
+  .attr("class","axis")
+  .call(d3.axisLeft(y).ticks(5));
+
+// Barre
+svg.selectAll(".bar")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("class","bar")
+  .attr("x",d=>x(d.word))
+  .attr("y",d=>y(d.value))
+  .attr("width",x.bandwidth())
+  .attr("height",d=>height - y(d.value));
+
+// Aggiornamento responsivo
+window.addEventListener("resize", () => {
+  const svgWidth = document.getElementById("chart").clientWidth;
+  const svgHeight = document.getElementById("chart").clientHeight;
+  const width = svgWidth - margin.left - margin.right;
+  const height = svgHeight - margin.top - margin.bottom;
+
+  x.range([0,width]);
+  y.range([height,0]);
+
+  svg.selectAll(".bar")
+    .attr("x",d=>x(d.word))
+    .attr("width",x.bandwidth())
+    .attr("y",d=>y(d.value))
+    .attr("height",d=>height - y(d.value));
+
+  svg.select(".axis").call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform","rotate(-90)")
+    .attr("text-anchor","end")
+    .attr("dx","-0.6em")
+    .attr("dy","-0.3em");
+
+  svg.select(".axis").call(d3.axisLeft(y).ticks(5));
+});
+</script>
+
+</body>
+</html>
