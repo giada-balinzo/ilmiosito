@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giada Balinzo</title>
+
+<style>
+@font-face {
+    font-family: 'Helvetica Neue';
+    font-weight: 500;
+    src: local('Helvetica Neue Medium'), local('HelveticaNeue-Medium');
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    background: #fff;
+    color: #000;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><text x="0" y="48" font-size="48">◤</text></svg>') 0 48, auto;
+}
+
+.container {
+    padding: 5px;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+/* HEADER */
+.header {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 216px;
+    white-space: nowrap;
+    position: absolute;
+    line-height: 1;
+    cursor: grab;
+    user-select: none;
+    z-index: 1;
+}
+
+nav {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #000;
+    font-size: 15px;
+}
+
+nav a:hover { color: #555; }
+
+/* FILETTI */
+.title-line,
+.text-line {
+    border-bottom: 1px solid #000;
+    margin: 6px 0;
+}
+
+/* PROGETTI */
+.projects {
+    margin-top: 6px;
+}
+
+.project {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-bottom: 1px solid #000;
+    transition: background-color 0.2s ease;
+}
+
+.project-inner:hover {
+    background-color: #000;
+}
+
+.project-title {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 96px;
+    line-height: 1;
+    cursor: grab;
+    user-select: none;
+    color: #000;
+    transition: color 0.2s ease;
+}
+
+.project-inner:hover .project-title {
+    color: #fff;
+}
+
+/* FOOTER */
+.footer {
+    font-size: 12px;
+    padding: 5px;
+    color: #222;
+    margin-top: auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="title draggable" data-speed="2.1">Giada Balinzo</div>
+
+        <nav>
+            <a href="https://www.instagram.com" target="_blank">Instagram</a>
+            <a href="https://www.behance.net/giadabalinzo" target="_blank">Behance</a>
+            <a href="mailto:giada.balinzo@gmail.com">Email</a>
+        </nav>
+    </div>
+
+    <div class="title-line"></div>
+
+    <div class="projects">
+
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="-1.2">Progetto 1</div>
+                <a href="es1 copia/index.html" class="project" >
+
+                </a>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="1.4">Progetto 2</div>
+                <a href="es1_prove copia/index.html" class="project" >
+                    
+                </a>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="-1.1">Progetto 3</div>
+                <a href="es2 copia/index.html" class="project" >
+                    
+                </a>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-inner">
+                <div class="project-title draggable" data-speed="1.3">Progetto 4</div>
+                <a href="es3 copia/index.html" class="project" >
+                    
+                </a>
+                
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+    © 2026 Giada Balinzo
+</div>
+
+<script>
+const elements = document.querySelectorAll(".draggable");
+
+elements.forEach(el => {
+    let speed = parseFloat(el.dataset.speed);
+    let position = speed > 0 ? -el.offsetWidth : window.innerWidth;
+    let dragging = false;
+    let startX = 0;
+    let startPos = 0;
+
+    el.style.left = position + "px";
+
+    el.addEventListener("mousedown", e => {
+        dragging = true;
+        startX = e.clientX;
+        startPos = position;
+        el.style.cursor = "grabbing";
+        e.preventDefault();
+    });
+
+    document.addEventListener("mousemove", e => {
+        if (!dragging) return;
+        position = startPos + (e.clientX - startX);
+        el.style.left = position + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+        dragging = false;
+        el.style.cursor = "grab";
+    });
+
+    function animate() {
+        if (!dragging) {
+            position += speed;
+
+            if (speed > 0 && position > window.innerWidth) {
+                position = -el.offsetWidth;
+            }
+            if (speed < 0 && position < -el.offsetWidth) {
+                position = window.innerWidth;
+            }
+            el.style.left = position + "px";
+        }
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+});
+</script>
+
+</body>
+</html>
